@@ -1,5 +1,6 @@
 package com.myapplicationdev.android.p05_ndpsongs;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,16 +16,16 @@ import java.util.ArrayList;
 
 public class SecondActivity extends AppCompatActivity {
 
-	ListView lv;
+    ListView lv;
     ArrayList<Song> songList;
-	CustomAdapter adapter;
-	String moduleCode;
+    //ArrayAdapter<Song> adapter;
+    String moduleCode;
     Button btn5Stars;
 
     ArrayList<String> years;
     Spinner spinner;
     ArrayAdapter<String> spinnerAdapter;
-
+    CustomAdapter adapter;
     @Override
     protected void onResume() {
         super.onResume();
@@ -39,11 +40,11 @@ public class SecondActivity extends AppCompatActivity {
     }
 
     @Override
-	protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
 
-        setTitle(getTitle().toString() + " ~  " + getResources().getText(R.string.title_activity_second));
+        setTitle(getTitle().toString() + " ~ " + getResources().getText(R.string.title_activity_second));
 
         lv = (ListView) this.findViewById(R.id.lv);
         btn5Stars = (Button) this.findViewById(R.id.btnShow5Stars);
@@ -54,7 +55,7 @@ public class SecondActivity extends AppCompatActivity {
         years = dbh.getYears();
         dbh.close();
 
-        adapter = new CustomAdapter(SecondActivity.this, R.layout.row, songList);
+        adapter = new CustomAdapter(this, R.layout.row, songList);
         lv.setAdapter(adapter);
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -85,7 +86,6 @@ public class SecondActivity extends AppCompatActivity {
                 DBHelper dbh = new DBHelper(SecondActivity.this);
                 songList.clear();
                 songList.addAll(dbh.getAllSongsByYear(Integer.valueOf(years.get(position))));
-                //user choose what year to display
                 adapter.notifyDataSetChanged();
             }
 

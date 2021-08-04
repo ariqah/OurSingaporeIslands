@@ -1,5 +1,6 @@
 package com.myapplicationdev.android.p05_ndpsongs;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ThirdActivity extends AppCompatActivity {
@@ -17,7 +19,6 @@ public class ThirdActivity extends AppCompatActivity {
     EditText etID, etTitle, etSingers, etYear;
     Button btnCancel, btnUpdate, btnDelete;
     RatingBar ratingBar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +36,9 @@ public class ThirdActivity extends AppCompatActivity {
         etYear = (EditText) findViewById(R.id.etYear);
         ratingBar = findViewById(R.id.ratingBarStars);
 
-
         Intent i = getIntent();
         final Song currentSong = (Song) i.getSerializableExtra("song");
 
-        //auto fill song attributes
         etID.setText(currentSong.getId()+"");
         etTitle.setText(currentSong.getTitle());
         etSingers.setText(currentSong.getSingers());
@@ -91,21 +90,51 @@ public class ThirdActivity extends AppCompatActivity {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DBHelper dbh = new DBHelper(ThirdActivity.this);
-                int result = dbh.deleteSong(currentSong.getId());
-                if (result>0){
-                    Toast.makeText(ThirdActivity.this, "Song deleted", Toast.LENGTH_SHORT).show();
-                    finish();
-                } else {
-                    Toast.makeText(ThirdActivity.this, "Delete failed", Toast.LENGTH_SHORT).show();
-                }
+                AlertDialog.Builder myBuilder = new AlertDialog.Builder(ThirdActivity.this);
+                myBuilder.setTitle("Danger");
+                myBuilder.setMessage("Are you sure you want to delete the island\n" + currentSong.getTitle());
+                myBuilder.setCancelable(false);
+
+                //configure the positive button
+                myBuilder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DBHelper dbh = new DBHelper(ThirdActivity.this);
+                        int result = dbh.deleteSong(currentSong.getId());
+                        if (result>0){
+                            Toast.makeText(ThirdActivity.this, "Song deleted", Toast.LENGTH_SHORT).show();
+                            finish();
+                        } else {
+                            Toast.makeText(ThirdActivity.this, "Delete failed", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                //configure the negative button
+                myBuilder.setNegativeButton("Cancel",null);
+
             }
         });
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                AlertDialog.Builder myBuilder = new AlertDialog.Builder(ThirdActivity.this);
+                myBuilder.setTitle("Danger");
+                myBuilder.setMessage("Are you sure you want to discard the changes" + currentSong.getTitle());
+                myBuilder.setCancelable(false);
+
+                //configure the positive button
+                myBuilder.setPositiveButton("Discard", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
+
+                //configure the negative button
+                myBuilder.setNegativeButton("Do not discard", null);
+
             }
         });
 

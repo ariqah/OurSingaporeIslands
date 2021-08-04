@@ -87,6 +87,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		cursor.close();
 		db.close();
 		return songslist;
+
 	}
 
 	public ArrayList<Song> getAllSongsByStars(int starsFilter) {
@@ -94,7 +95,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 		SQLiteDatabase db = this.getReadableDatabase();
         String[] columns= {COLUMN_ID, COLUMN_TITLE, COLUMN_SINGERS, COLUMN_YEAR, COLUMN_STARS};
-        String condition = COLUMN_STARS + ">= ?";
+        String condition = COLUMN_STARS + " = ?";
         String[] args = {String.valueOf(starsFilter)};
 
         //String selectQuery = "SELECT " + COLUMN_ID + ","

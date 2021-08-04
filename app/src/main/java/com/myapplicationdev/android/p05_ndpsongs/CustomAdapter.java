@@ -45,7 +45,7 @@ public class CustomAdapter extends ArrayAdapter {
         ImageView ivNew = rowView.findViewById(R.id.imageViewNew);
         RatingBar rbSong = rowView.findViewById(R.id.ratingBarSong);
 
-        // Obtain the Android Version information based on the position
+        // Obtain the song information based on the position
         Song currentSong = tasksArrayList.get(position);
 
         // Set values to the TextView to display the corresponding information
